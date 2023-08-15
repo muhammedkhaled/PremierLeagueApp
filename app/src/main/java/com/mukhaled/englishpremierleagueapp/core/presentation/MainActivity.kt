@@ -15,6 +15,8 @@ import com.mukhaled.englishpremierleagueapp.core.presentation.theme.EnglishPremi
 import com.mukhaled.englishpremierleagueapp.premierLeagueMatches.presentation.ViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import com.Aqua_waterfliter.tech_app.core.ui.uiComponents.ComposableLifecycle
 import com.mukhaled.englishpremierleagueapp.premierLeagueMatches.presentation.TodayMatchScreen
 import com.mukhaled.englishpremierleagueapp.premierLeagueMatches.presentation.UiEvent
 
@@ -24,10 +26,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             val viewModel = hiltViewModel<ViewModel>()
-            viewModel.onEvent(UiEvent.GetInitialData)
-
-
-
+            ComposableLifecycle { source, event ->
+                if (event == Lifecycle.Event.ON_START) {
+                    viewModel.onEvent(UiEvent.GetInitialData)
+                }
+            }
             EnglishPremierLeagueAppTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(
